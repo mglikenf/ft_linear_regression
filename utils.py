@@ -24,21 +24,26 @@ def estimate_price(theta0, theta1, mileage):
     return theta0 + theta1 * mileage
 
 
-def load(path: str) -> pd.DataFrame:
+def load_dataset(path: str) -> pd.DataFrame:
     """
-    Loads a dataset from the given file path,
-    displays its dimensions and returns a DataFrame.
-    Returns None if path is invalid or file cannot be loaded.
+    Loads and validates a CSV dataset for training or display.
+    Returns a valid DataFrame or raises an exception describing the failure.
     """
     if not isinstance(path, str):
-        print('Error: path must be a string')
-        return None
+        raise TypeError('Path must be a string')
     if not path.lower().endswith('.csv'):
-        print('Error: only .csv format is supported')
-        return None
+        raise ValueError('Only .csv format is supported')
     try:
         df = pd.read_csv(path)
-        return df
+    except FileNotFoundError:
+        raise FileNotFoundError(f'Dataset file not found: {path}')
     except Exception as e:
-        print(f"Error: {e}")
-        return None
+        raise OSError(f'Could not load dataset: {e}')
+
+    if df.empty:
+        raise ValueError('Dataset is empty')
+    if not all(col in df.columns for col in ['km', 'price']):
+        raise ValueError('Dataset must contain columns: km, price')
+    if df[['km', 'price']].isnull().any().any():
+        raise ValueError('Dataset contains missing values')
+    return df

@@ -1,4 +1,4 @@
-from utils import normalize, load, estimate_price
+from utils import normalize, load_dataset, estimate_price
 import pandas as pd
 import json
 import time
@@ -59,20 +59,8 @@ def main():
     and saves the resulting model parameters to thetas.json.
     """
 
-    df = load('data.csv')
-    if df is None:
-        return
-    if df.empty:
-        print('Error: dataset is empty')
-        return
-    if not all(col in df.columns for col in ['km', 'price']):
-        print('Error: dataset must contain columns: km, price')
-        return
-    if df[['km', 'price']].isnull().any().any():
-        print('Error: dataset contains missing values')
-        return
-
     try:
+        df = load_dataset('data.csv')
         result = train(df, 0.0, 0.0)
         with open('thetas.json', 'w') as f:
             json.dump(result, f)
