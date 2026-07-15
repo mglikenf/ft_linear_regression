@@ -36,7 +36,7 @@ def load_dataset(path: str) -> pd.DataFrame:
     try:
         df = pd.read_csv(path)
     except FileNotFoundError:
-        raise FileNotFoundError(f'Dataset file not found: {path}')
+        raise FileNotFoundError(f'{path} not found.')
     except Exception as e:
         raise OSError(f'Could not load dataset: {e}')
 

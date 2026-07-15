@@ -30,7 +30,12 @@ def main():
         plt.show()
     except (json.JSONDecodeError, KeyError):
         print('Error: thetas.json is malformed. Please run train.py again.')
-    except (ValueError, FileNotFoundError, OSError) as e:
+    except FileNotFoundError as e:
+        if e.filename == 'thetas.json':
+            print(f'Error: thetas.json not found. Please run train.py first.')
+        else:
+            print(f'Error: {e}')
+    except (ValueError, OSError) as e:
         print(f'Error: {e}')
     except Exception as e:
         print(f'Error: {e}')
