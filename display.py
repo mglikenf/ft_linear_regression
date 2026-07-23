@@ -66,6 +66,8 @@ def main():
             print(f'Error: {e}')
     except (ValueError, OSError) as e:
         print(f'Error: {e}')
+    except KeyboardInterrupt:
+        print('\nError: Aborted.')
     except Exception as e:
         print(f'Error: {e}')
 

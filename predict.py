@@ -39,6 +39,8 @@ def main():
         print('Error: model.json is malformed. Please run train.py again.')
     except FileNotFoundError:
         print('Error: model.json not found. Please run train.py first.')
+    except (KeyboardInterrupt, EOFError):
+        print('\nError: Aborted.')
     except Exception as e:
         print(f'Error: {e}')
 

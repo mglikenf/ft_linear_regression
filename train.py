@@ -79,6 +79,8 @@ def main():
             json.dump(result, f)
     except ValueError:
         print('Error: Learning rate must have a positive numeric value.')
+    except (KeyboardInterrupt, EOFError):
+        print('\nError: Aborted.')
     except Exception as e:
         print(f'Error: {e}')
 
