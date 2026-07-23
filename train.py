@@ -72,13 +72,15 @@ def main():
         else:
             learning_rate = float(user_input)
         if learning_rate <= 0:
-            raise ValueError
+            raise ValueError('Learning rate must have a positive value.')
+        if learning_rate > 2:
+            raise ValueError('Maximum learning rate 2.0')
         df = load_dataset('data.csv')
         result = train(df, 0.0, 0.0, learning_rate)
         with open('model.json', 'w') as f:
             json.dump(result, f)
-    except ValueError:
-        print('Error: Learning rate must have a positive numeric value.')
+    except ValueError as e:
+        print(f'Error: {e}')
     except (KeyboardInterrupt, EOFError):
         print('\nError: Aborted.')
     except Exception as e:
