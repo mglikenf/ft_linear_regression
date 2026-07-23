@@ -7,7 +7,10 @@ LEARNING_RATE = 0.1
 NUM_ITERATIONS = 1000
 
 
-def train(df: pd.DataFrame, theta0: float, theta1: float) -> dict:
+def train(df: pd.DataFrame,
+          theta0: float,
+          theta1: float,
+          learning_rate: float) -> dict:
     """
     Runs gradient descent on normalized mileage and price data to find
     optimal model coefficients.
@@ -30,8 +33,8 @@ def train(df: pd.DataFrame, theta0: float, theta1: float) -> dict:
     for iteration in range(NUM_ITERATIONS):
         estimated_price = estimate_price(theta0, theta1, normalized_mileage)
         residuals = estimated_price - normalized_price
-        tmp_theta0 = LEARNING_RATE * residuals.sum() / m
-        tmp_theta1 = LEARNING_RATE * (residuals * normalized_mileage).sum() / m
+        tmp_theta0 = learning_rate * residuals.sum() / m
+        tmp_theta1 = learning_rate * (residuals * normalized_mileage).sum() / m
         mse = (residuals ** 2).sum() / m
         errors.append(mse)
         theta0 = theta0 - tmp_theta0
@@ -57,15 +60,25 @@ def train(df: pd.DataFrame, theta0: float, theta1: float) -> dict:
 
 def main():
     """
-    Loads the dataset, runs the training pipeline,
+    Prompts the user for a learning rate,
+    loads the dataset, runs the training pipeline,
     and saves the result to model.json.
     """
 
     try:
+        user_input = input('Enter a learning rate value: ')
+        if user_input == '':
+            learning_rate = LEARNING_RATE
+        else:
+            learning_rate = float(user_input)
+        if learning_rate <= 0:
+            raise ValueError
         df = load_dataset('data.csv')
-        result = train(df, 0.0, 0.0)
+        result = train(df, 0.0, 0.0, learning_rate)
         with open('model.json', 'w') as f:
             json.dump(result, f)
+    except ValueError:
+        print('Error: Learning rate must have a positive numeric value.')
     except Exception as e:
         print(f'Error: {e}')
 
