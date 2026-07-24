@@ -22,7 +22,7 @@ def main():
 
         fig, axs = plt.subplots(1, 3, figsize=(16, 4))
 
-        # top left - scatter plot with regression line
+        # left - scatter plot with regression line
         x_line = np.array([min_mileage, max_mileage])
         x_line_norm = normalize(x_line, min_mileage, max_mileage)
         y_line_norm = estimate_price(theta0, theta1, x_line_norm)
@@ -36,7 +36,7 @@ def main():
         axs[0].grid()
         axs[0].legend()
 
-        # top right - mse across iterations
+        # center - mse across iterations
         axs[1].set_title('MSE Over Iterations')
         axs[1].set_xlabel('Iterations')
         axs[1].set_ylabel('MSE')
@@ -44,7 +44,7 @@ def main():
         axs[1].grid()
         axs[1].legend()
 
-        # bottom right - theta0 and theta1 across iterations
+        # right - theta0 and theta1 across iterations
         t0, t1 = zip(*history)
         axs[2].set_title('θ0 and θ1 Convergence')
         axs[2].set_xlabel('Iterations')
